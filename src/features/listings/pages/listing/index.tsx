@@ -1,5 +1,6 @@
 import { useListings } from "../../hooks/useListings";
 import { ListingHeader } from "../../components/listingHeader";
+import { ListingBody } from "../../components/listingBody";
 
 function Listing() {
   const { isLoading, isError, data } = useListings();
@@ -37,27 +38,7 @@ function Listing() {
         bedsNumber={data.bedsNumber}
       />
 
-      <p>
-        <strong>Location:</strong> {data.city}, {data.state}, {data.country}
-      </p>
-      <p>
-        <strong>Address:</strong> {data.publicAddress}
-      </p>
-      <p>
-        <strong>Description:</strong> {data.description}
-      </p>
-      <p>
-        <strong>Price:</strong> ${data.price}/night
-      </p>
-      <p>
-        <strong>Bedrooms:</strong> {data.bedroomsNumber} |{" "}
-        <strong>Bathrooms:</strong> {data.bathroomsNumber} |{" "}
-        <strong>Guests:</strong> {data.personCapacity}
-      </p>
-      <p>
-        <strong>Rating:</strong> {data.averageReviewRating}/10 (
-        {data.starRating} stars)
-      </p>
+      <ListingBody listing={data} />
     </div>
   );
 }

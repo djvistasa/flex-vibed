@@ -1,4 +1,5 @@
 import type { IApiResponse, UtilityFunction, UtilityType } from "./types";
+import { BEARER_TOKEN, BASE_URL } from "@common/config/env";
 
 export const formatString = (str: string): string => {
   return str.trim().toLowerCase();
@@ -35,8 +36,8 @@ export const makeApiRequest = async (
   url: string,
   options?: RequestInit
 ): Promise<IApiResponse> => {
-  const bearerToken = import.meta.env.VITE_BEARER_TOKEN;
-  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const bearerToken = BEARER_TOKEN;
+  const baseUrl = BASE_URL;
 
   const response = await fetch(`${baseUrl}${url}`, {
     ...options,

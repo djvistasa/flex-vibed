@@ -86,7 +86,7 @@ export function Modal({
   if (!isOpen) return null;
 
   return (
-    <StyledModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
+    <StyledModalOverlay $isOpen={isOpen} onClick={handleOverlayClick}>
       <StyledModalContainer ref={modalRef} tabIndex={-1}>
         {title && (
           <StyledModalHeader>

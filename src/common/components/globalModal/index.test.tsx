@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { GlobalModal } from "./index";
 import { useUIStore } from "@common/stores/ui";
 
@@ -8,6 +9,7 @@ jest.mock("@common/stores/ui", () => ({
 }));
 
 describe("GlobalModal", () => {
+  const renderWithTheme = useTestComponentWithTheme();
   const mockHideModal = jest.fn();
   const mockOnClose = jest.fn();
 
@@ -33,7 +35,7 @@ describe("GlobalModal", () => {
       })
     );
 
-    render(<GlobalModal />);
+    renderWithTheme(<GlobalModal />);
 
     expect(screen.getByText("Test Title")).toBeTruthy();
     expect(screen.getByText("Test content")).toBeTruthy();
@@ -57,7 +59,7 @@ describe("GlobalModal", () => {
       })
     );
 
-    render(<GlobalModal />);
+    renderWithTheme(<GlobalModal />);
 
     expect(screen.queryByText("Test Title")).toBeFalsy();
   });
@@ -80,7 +82,7 @@ describe("GlobalModal", () => {
       })
     );
 
-    render(<GlobalModal />);
+    renderWithTheme(<GlobalModal />);
 
     const closeButton = screen.getByText("×");
     fireEvent.click(closeButton);
@@ -106,7 +108,7 @@ describe("GlobalModal", () => {
       })
     );
 
-    render(<GlobalModal />);
+    renderWithTheme(<GlobalModal />);
 
     const closeButton = screen.getByText("×");
     fireEvent.click(closeButton);
@@ -117,6 +119,7 @@ describe("GlobalModal", () => {
 
   it("passes all modal props to Modal component", () => {
     const mockOnConfirm = jest.fn();
+    const mockOnCancel = jest.fn();
 
     (useUIStore as unknown as jest.Mock).mockImplementation((selector) =>
       selector({
@@ -128,6 +131,7 @@ describe("GlobalModal", () => {
           confirmText: "Yes",
           cancelText: "No",
           onConfirm: mockOnConfirm,
+          onCancel: mockOnCancel,
           onClose: mockOnClose,
           confirmDisabled: true,
         },
@@ -135,7 +139,7 @@ describe("GlobalModal", () => {
       })
     );
 
-    render(<GlobalModal />);
+    renderWithTheme(<GlobalModal />);
 
     expect(screen.getByText("Confirm Action")).toBeTruthy();
     expect(screen.getByText("Are you sure?")).toBeTruthy();

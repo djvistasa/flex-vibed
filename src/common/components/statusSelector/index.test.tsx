@@ -1,8 +1,10 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { StatusSelector } from "./index";
 import type { IRatingStatus } from "@features/ratings/store/types";
 
 describe("StatusSelector", () => {
+  const renderWithTheme = useTestComponentWithTheme();
   const mockOnStatusSelect = jest.fn();
 
   beforeEach(() => {
@@ -10,7 +12,7 @@ describe("StatusSelector", () => {
   });
 
   it("renders all status options", () => {
-    render(
+    renderWithTheme(
       <StatusSelector
         currentStatus="awaiting"
         onStatusSelect={mockOnStatusSelect}
@@ -27,7 +29,7 @@ describe("StatusSelector", () => {
   });
 
   it("shows checkmark on current status initially", () => {
-    render(
+    renderWithTheme(
       <StatusSelector
         currentStatus="pending"
         onStatusSelect={mockOnStatusSelect}
@@ -40,7 +42,7 @@ describe("StatusSelector", () => {
   });
 
   it("calls onStatusSelect when a status is clicked", () => {
-    render(
+    renderWithTheme(
       <StatusSelector
         currentStatus="awaiting"
         onStatusSelect={mockOnStatusSelect}
@@ -55,7 +57,7 @@ describe("StatusSelector", () => {
   });
 
   it("updates selected status when different option is clicked", () => {
-    render(
+    renderWithTheme(
       <StatusSelector
         currentStatus="awaiting"
         onStatusSelect={mockOnStatusSelect}
@@ -88,7 +90,7 @@ describe("StatusSelector", () => {
     ];
 
     statuses.forEach((status) => {
-      const { unmount } = render(
+      const { unmount } = renderWithTheme(
         <StatusSelector
           currentStatus={status}
           onStatusSelect={mockOnStatusSelect}

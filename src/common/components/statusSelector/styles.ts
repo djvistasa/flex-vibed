@@ -30,12 +30,12 @@ export const StyledStatusList = styled.div`
 `;
 
 export const StyledStatusOption = styled.div<{
-  isSelected: boolean;
-  status: string;
+  $isSelected: boolean;
+  $status: string;
 }>`
   padding: ${({ theme }) => theme.spacing.md};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  background-color: ${({ theme, status }) => getStatusColor(theme, status)};
+  background-color: ${({ theme, $status }) => getStatusColor(theme, $status)};
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -43,24 +43,24 @@ export const StyledStatusOption = styled.div<{
   justify-content: space-between;
   position: relative;
   border: 2px solid
-    ${({ theme, isSelected }) =>
-      isSelected ? theme.colors.surface : "transparent"};
-  box-shadow: ${({ isSelected }) =>
-    isSelected ? "0 4px 12px rgba(0, 0, 0, 0.2)" : "none"};
-  transform: ${({ isSelected }) =>
-    isSelected ? "translateX(4px)" : "translateX(0)"};
+    ${({ theme, $isSelected }) =>
+      $isSelected ? theme.colors.surface : "transparent"};
+  box-shadow: ${({ $isSelected }) =>
+    $isSelected ? "0 4px 12px rgba(0, 0, 0, 0.2)" : "none"};
+  transform: ${({ $isSelected }) =>
+    $isSelected ? "translateX(4px)" : "translateX(0)"};
 
   &:hover {
     opacity: 0.9;
-    transform: ${({ isSelected }) =>
-      isSelected ? "translateX(4px) translateY(-2px)" : "translateY(-2px)"};
+    transform: ${({ $isSelected }) =>
+      $isSelected ? "translateX(4px) translateY(-2px)" : "translateY(-2px)"};
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     border-color: ${({ theme }) => theme.colors.surface};
   }
 
   &:active {
-    transform: ${({ isSelected }) =>
-      isSelected ? "translateX(4px)" : "translateX(0)"};
+    transform: ${({ $isSelected }) =>
+      $isSelected ? "translateX(4px)" : "translateX(0)"};
     opacity: 0.95;
   }
 `;
@@ -76,8 +76,8 @@ export const StyledStatusBadge = styled.span`
   transition: all 0.2s ease;
 `;
 
-export const StyledCheckmark = styled.span<{ isVisible: boolean }>`
-  display: ${({ isVisible }) => (isVisible ? "flex" : "none")};
+export const StyledCheckmark = styled.span<{ $isVisible: boolean }>`
+  display: ${({ $isVisible }) => ($isVisible ? "flex" : "none")};
   align-items: center;
   justify-content: center;
   width: 20px;

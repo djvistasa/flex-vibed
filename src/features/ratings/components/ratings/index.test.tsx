@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { Ratings } from "./index";
 
 // Mock the useRatings hook
@@ -8,7 +9,13 @@ jest.mock("../../hooks/useRatings", () => ({
 
 // Mock the rating store
 jest.mock("../../store", () => ({
-  useRatingStore: jest.fn(),
+  useRatingStore: jest.fn((selector) => {
+    const store = {
+      filteredRatings: [],
+      ratings: [],
+    };
+    return selector(store);
+  }),
 }));
 
 // Mock the Rating component
@@ -19,6 +26,8 @@ jest.mock("../rating", () => ({
 }));
 
 describe("Ratings", () => {
+  const renderWithTheme = useTestComponentWithTheme();
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -34,12 +43,15 @@ describe("Ratings", () => {
       refetch: jest.fn(),
     });
 
-    useRatingStore.mockReturnValue({
-      filteredRatings: [],
-      ratings: [],
+    useRatingStore.mockImplementation((selector) => {
+      const store = {
+        filteredRatings: [],
+        ratings: [],
+      };
+      return selector(store);
     });
 
-    render(<Ratings />);
+    renderWithTheme(<Ratings />);
   });
 
   it("displays loading state", () => {
@@ -53,12 +65,15 @@ describe("Ratings", () => {
       refetch: jest.fn(),
     });
 
-    useRatingStore.mockReturnValue({
-      filteredRatings: [],
-      ratings: [],
+    useRatingStore.mockImplementation((selector) => {
+      const store = {
+        filteredRatings: [],
+        ratings: [],
+      };
+      return selector(store);
     });
 
-    render(<Ratings />);
+    renderWithTheme(<Ratings />);
     expect(screen.getByText("Loading ratings...")).toBeTruthy();
   });
 
@@ -73,12 +88,15 @@ describe("Ratings", () => {
       refetch: jest.fn(),
     });
 
-    useRatingStore.mockReturnValue({
-      filteredRatings: [],
-      ratings: [],
+    useRatingStore.mockImplementation((selector) => {
+      const store = {
+        filteredRatings: [],
+        ratings: [],
+      };
+      return selector(store);
     });
 
-    render(<Ratings />);
+    renderWithTheme(<Ratings />);
     expect(screen.getByText(/Error loading ratings/)).toBeTruthy();
   });
 
@@ -93,12 +111,15 @@ describe("Ratings", () => {
       refetch: jest.fn(),
     });
 
-    useRatingStore.mockReturnValue({
-      filteredRatings: [],
-      ratings: [],
+    useRatingStore.mockImplementation((selector) => {
+      const store = {
+        filteredRatings: [],
+        ratings: [],
+      };
+      return selector(store);
     });
 
-    render(<Ratings />);
+    renderWithTheme(<Ratings />);
     expect(screen.getByText("No ratings found")).toBeTruthy();
   });
 
@@ -118,12 +139,15 @@ describe("Ratings", () => {
       refetch: jest.fn(),
     });
 
-    useRatingStore.mockReturnValue({
-      filteredRatings: mockRatings,
-      ratings: mockRatings,
+    useRatingStore.mockImplementation((selector) => {
+      const store = {
+        filteredRatings: mockRatings,
+        ratings: mockRatings,
+      };
+      return selector(store);
     });
 
-    render(<Ratings />);
+    renderWithTheme(<Ratings />);
     expect(screen.getAllByTestId("rating")).toHaveLength(2);
   });
 });

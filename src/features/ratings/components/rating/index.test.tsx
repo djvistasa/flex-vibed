@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { Rating } from "./index";
 import type { IRating } from "../../hooks/useRatings/types";
 
@@ -47,43 +48,84 @@ const mockRatingWithoutValue: IRating = {
   id: 2,
   rating: null,
   status: "awaiting",
+  reviewCategory: [],
 };
 
+// Mock the UI store
+jest.mock("@common/stores/ui", () => ({
+  useUIStore: jest.fn((selector) => {
+    const store = {
+      showModal: jest.fn(),
+      hideModal: jest.fn(),
+    };
+    return selector(store);
+  }),
+}));
+
+// Mock the rating store
+jest.mock("../../store", () => ({
+  useRatingStore: jest.fn((selector) => {
+    const store = {
+      changeRatingStatus: jest.fn(),
+    };
+    return selector(store);
+  }),
+}));
+
 describe("Rating", () => {
+  const renderWithTheme = useTestComponentWithTheme();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders without crashing", () => {
-    render(<Rating rating={mockRatingWithValue} />);
+    renderWithTheme(<Rating rating={mockRatingWithValue} />, {
+      withRouter: true,
+    });
   });
 
   it("displays the listing name", () => {
-    render(<Rating rating={mockRatingWithValue} />);
+    renderWithTheme(<Rating rating={mockRatingWithValue} />, {
+      withRouter: true,
+    });
     expect(
       screen.getByText("Beautiful and cozy apartment close to city center")
     ).toBeTruthy();
   });
 
   it("displays the review status", () => {
-    render(<Rating rating={mockRatingWithValue} />);
+    renderWithTheme(<Rating rating={mockRatingWithValue} />, {
+      withRouter: true,
+    });
     expect(screen.getByText("Completed")).toBeTruthy();
   });
 
   it("displays rating value with stars", () => {
-    render(<Rating rating={mockRatingWithValue} />);
+    renderWithTheme(<Rating rating={mockRatingWithValue} />, {
+      withRouter: true,
+    });
     expect(screen.getByText("(5/5)")).toBeTruthy();
   });
 
   it("displays 'Not rated yet' for null ratings", () => {
-    render(<Rating rating={mockRatingWithoutValue} />);
+    renderWithTheme(<Rating rating={mockRatingWithoutValue} />, {
+      withRouter: true,
+    });
     expect(screen.getByText("Not rated yet")).toBeTruthy();
   });
 
   it("displays correct number of filled stars", () => {
-    render(<Rating rating={mockRatingWithValue} />);
-    const starsContainer = screen.getByText("★");
-    expect(starsContainer).toBeTruthy();
+    renderWithTheme(<Rating rating={mockRatingWithValue} />, {
+      withRouter: true,
+    });
+    expect(screen.getAllByText("★").length).toBeGreaterThan(0);
   });
 
   it("displays review categories when available", () => {
-    render(<Rating rating={mockRatingWithValue} />);
+    renderWithTheme(<Rating rating={mockRatingWithValue} />, {
+      withRouter: true,
+    });
     expect(screen.getByText("Review Categories")).toBeTruthy();
     expect(screen.getByText("cleanliness")).toBeTruthy();
     expect(screen.getByText("communication")).toBeTruthy();
@@ -91,13 +133,17 @@ describe("Rating", () => {
   });
 
   it("displays category ratings correctly", () => {
-    render(<Rating rating={mockRatingWithValue} />);
+    renderWithTheme(<Rating rating={mockRatingWithValue} />, {
+      withRouter: true,
+    });
     const categoryScores = screen.getAllByText("10/10");
     expect(categoryScores.length).toBe(3);
   });
 
   it("does not display review categories when empty", () => {
-    render(<Rating rating={mockRatingWithoutValue} />);
+    renderWithTheme(<Rating rating={mockRatingWithoutValue} />, {
+      withRouter: true,
+    });
     expect(screen.queryByText("Review Categories")).toBeFalsy();
   });
 });

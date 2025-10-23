@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const StyledModalOverlay = styled.div<{ isOpen: boolean }>`
+export const StyledModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
+  display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
   align-items: center;
   justify-content: center;
   z-index: 1000;

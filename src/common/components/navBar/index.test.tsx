@@ -1,5 +1,22 @@
-import useTestComponentWithTheme from "../../hooks/useTestComponentWithTheme/index";
+import { screen } from "@testing-library/react";
+import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import NavBar from "./index";
+
+// Mock the UI store
+jest.mock("@common/stores/ui", () => ({
+  useUIStore: jest.fn((selector) => {
+    const store = {
+      showModal: jest.fn(),
+      hideModal: jest.fn(),
+    };
+    return selector(store);
+  }),
+}));
+
+// Mock FilterForm component
+jest.mock("@common/components/filterForm", () => ({
+  FilterForm: () => <div>Filter Form</div>,
+}));
 
 describe("NavBar", () => {
   const renderWithTheme = useTestComponentWithTheme();
@@ -8,29 +25,21 @@ describe("NavBar", () => {
     jest.clearAllMocks();
   });
 
-  it("renders without crashing", () => {
-    const { getByText } = renderWithTheme(<NavBar />);
-    expect(getByText("The Flex Global")).toBeTruthy();
-  });
-
   it("renders the brand name", () => {
-    const { getByText } = renderWithTheme(<NavBar />);
-    expect(getByText("The Flex Global")).toBeTruthy();
+    renderWithTheme(<NavBar />, { withRouter: true });
+    expect(screen.getByText("The Flex Global")).toBeTruthy();
   });
 
-  it("renders user profile when user is provided", () => {
-    const { getByText } = renderWithTheme(<NavBar />);
-    expect(getByText("John Doe")).toBeTruthy();
-    expect(getByText("Admin")).toBeTruthy();
+  it("shows Filter & Sort button on home page", () => {
+    renderWithTheme(<NavBar />, { withRouter: true, initialRoute: "/" });
+    expect(screen.getByText("Filter & Sort")).toBeTruthy();
   });
 
-  it("renders notification badge when notifications > 0", () => {
-    const { getByText } = renderWithTheme(<NavBar />);
-    expect(getByText("3")).toBeTruthy();
-  });
-
-  it("renders without user when user is not provided", () => {
-    const { queryByText } = renderWithTheme(<NavBar />);
-    expect(queryByText("John Doe")).toBeFalsy();
+  it("hides Filter & Sort button on other pages", () => {
+    renderWithTheme(<NavBar />, {
+      withRouter: true,
+      initialRoute: "/listing/123",
+    });
+    expect(screen.queryByText("Filter & Sort")).toBeFalsy();
   });
 });

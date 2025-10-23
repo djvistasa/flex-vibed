@@ -1,0 +1,42 @@
+// Helper function to get icon for amenity
+export const getAmenityIcon = (name: string): string => {
+  const iconMap: Record<string, string> = {
+    "Cable TV": "📺",
+    Internet: "🌐",
+    Wireless: "📶",
+    Kitchen: "🍴",
+    "Washing Machine": "🧺",
+    "Hair Dryer": "💨",
+    Heating: "🌡️",
+    "Smoke detector": "🛡️",
+    "Carbon Monoxide Detector": "🛡️",
+    "Air conditioning": "❄️",
+    "Swimming pool": "🏊",
+    Gym: "💪",
+    Breakfast: "🍳",
+    "Hot tub": "🛁",
+    Fireplace: "🔥",
+    Dryer: "🌪️",
+    Elevator: "🛗",
+    "24-hour checkin": "🕐",
+    TV: "📺",
+    "Sound system": "🔊",
+    "Smoking allowed": "🚬",
+    "Pets allowed": "🐕",
+    "Street parking": "🅿️",
+    "Free parking": "🅿️",
+    Balcony: "🏠",
+    "Private pool": "🏊",
+    "Indoor pool": "🏊",
+    "Heated swimming pool": "🏊",
+    "Communal swimming pool": "🏊",
+    "Paid parking": "🅿️",
+    "Private parking": "🅿️",
+    "Paid parking on premises": "🅿️",
+    Garage: "🏠",
+    Safe: "🔒",
+    "Security system": "🔐",
+  };
+
+  return iconMap[name] || "🏠";
+};

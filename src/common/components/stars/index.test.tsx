@@ -1,48 +1,51 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { Stars } from "./index";
 
 describe("Stars", () => {
+  const renderWithTheme = useTestComponentWithTheme();
+
   it("renders without crashing", () => {
-    render(<Stars rating={5} />);
+    renderWithTheme(<Stars rating={5} />);
   });
 
   it("displays correct number of filled stars for whole number rating", () => {
-    render(<Stars rating={5} />);
-    expect(screen.getByText("★")).toBeTruthy();
+    renderWithTheme(<Stars rating={5} />);
+    expect(screen.getAllByText("★").length).toBeGreaterThan(0);
   });
 
   it("displays rating text when showText is true", () => {
-    render(<Stars rating={4} showText={true} />);
+    renderWithTheme(<Stars rating={4} showText={true} />);
     expect(screen.getByText("(4/5)")).toBeTruthy();
   });
 
   it("does not display rating text when showText is false", () => {
-    render(<Stars rating={4} showText={false} />);
+    renderWithTheme(<Stars rating={4} showText={false} />);
     expect(screen.queryByText("(4/5)")).toBeFalsy();
   });
 
   it("displays 'Not rated yet' for null rating", () => {
-    render(<Stars rating={null} />);
+    renderWithTheme(<Stars rating={null} />);
     expect(screen.getByText("Not rated yet")).toBeTruthy();
   });
 
   it("displays empty stars for rating of 0", () => {
-    render(<Stars rating={0} />);
-    expect(screen.getByText("☆")).toBeTruthy();
+    renderWithTheme(<Stars rating={0} />);
+    expect(screen.getAllByText("☆").length).toBeGreaterThan(0);
   });
 
   it("uses custom maxRating when provided", () => {
-    render(<Stars rating={8} maxRating={10} showText={true} />);
+    renderWithTheme(<Stars rating={8} maxRating={10} showText={true} />);
     expect(screen.getByText("(8/10)")).toBeTruthy();
   });
 
   it("handles half stars correctly", () => {
-    render(<Stars rating={3.5} />);
+    renderWithTheme(<Stars rating={3.5} />);
     expect(screen.getByText("⯨")).toBeTruthy();
   });
 
   it("displays correct mix of filled and empty stars", () => {
-    const { container } = render(<Stars rating={3} maxRating={5} />);
+    const { container } = renderWithTheme(<Stars rating={3} maxRating={5} />);
     const starsDisplay = container.querySelector("div > div");
     expect(starsDisplay).toBeTruthy();
   });

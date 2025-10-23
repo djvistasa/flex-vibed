@@ -45,9 +45,15 @@ describe("Modal", () => {
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  it("calls onClose when cancel button is clicked", () => {
+  it("calls onCancel when cancel button is clicked", () => {
+    const mockOnCancel = jest.fn();
     renderWithTheme(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal
+        isOpen={true}
+        onClose={mockOnClose}
+        onCancel={mockOnCancel}
+        title="Test Modal"
+      >
         <p>Modal content</p>
       </Modal>
     );
@@ -55,7 +61,7 @@ describe("Modal", () => {
     const cancelButton = screen.getByText("Cancel");
     fireEvent.click(cancelButton);
 
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
+    expect(mockOnCancel).toHaveBeenCalledTimes(1);
   });
 
   it("calls onConfirm when confirm button is clicked", () => {
@@ -94,11 +100,13 @@ describe("Modal", () => {
   });
 
   it("uses custom button text", () => {
+    const mockOnCancel = jest.fn();
     renderWithTheme(
       <Modal
         isOpen={true}
         onClose={mockOnClose}
         onConfirm={mockOnConfirm}
+        onCancel={mockOnCancel}
         confirmText="Save"
         cancelText="Discard"
         title="Test Modal"

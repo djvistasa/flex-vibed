@@ -35,14 +35,14 @@ export function StatusSelector({
       {statusOptions.map((status: IRatingStatus) => (
         <StyledStatusOption
           key={status}
-          status={status}
-          isSelected={selectedStatus === status}
+          $status={status}
+          $isSelected={selectedStatus === status}
           onClick={() => handleStatusClick(status)}
         >
           <StyledStatusBadge>
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </StyledStatusBadge>
-          <StyledCheckmark isVisible={selectedStatus === status}>
+          <StyledCheckmark $isVisible={selectedStatus === status}>
             ✓
           </StyledCheckmark>
         </StyledStatusOption>
