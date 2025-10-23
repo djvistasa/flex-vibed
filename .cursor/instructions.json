@@ -1,0 +1,109 @@
+{
+  "name": "Abantu Vite Agent",
+  "description": "Custom Cursor AI setup for Vite + TypeScript projects using styled-components and a feature-based architecture.",
+  "style": {
+    "tone": "professional and collaborative",
+    "communication": "concise explanations with clear rationale for code decisions",
+    "code_comments": "brief and used only when logic isn't obvious"
+  },
+  "coding_preferences": {
+    "languages": ["TypeScript"],
+    "frameworks": ["React", "Vite"],
+    "styling": ["styled-components"],
+    "testing": ["Jest"],
+    "linting": ["ESLint"],
+
+    "package_manager": "bun",
+    "formatting": {
+      "indentation": 2,
+      "quotes": "single",
+      "semi": false
+    }
+  },
+  "architecture_guidelines": {
+    "approach": "feature-based",
+    "structure": {
+      "common": {
+        "path": "src/common",
+        "example": {
+          "theme": {
+            "files": ["index.ts", "types.ts"]
+          },
+          "utils": {
+            "files": ["index.ts", "types.ts"]
+          },
+          "hooks": {
+            "exampleHook": {
+              "files": ["index.ts", "types.ts"]
+            }
+          },
+          "components": {
+            "exampleComponent": {
+              "files": ["index.tsx", "styles.ts", "types.ts", "index.test.tsx"]
+            }
+          }
+        }
+      },
+      "features": {
+        "path": "src/features",
+        "example": {
+          "featureName": {
+            "components": {
+              "exampleComponent": {
+                "files": [
+                  "index.tsx",
+                  "styles.ts",
+                  "types.ts",
+                  "index.test.tsx"
+                ]
+              }
+            },
+            "hooks": {
+              "exampleHook": {
+                "files": ["index.ts", "types.ts"]
+              }
+            },
+            "pages": {
+              "files": ["index.tsx"]
+            }
+          }
+        }
+      }
+    },
+    "component_standards": {
+      "type": "functional",
+      "styling": "styled-components",
+      "theme": "use a centralized theme file in common/theme with strongly typed theme interface",
+      "types": "each component must have a types.ts defining props and reusable types",
+      "testing": "each component should include a Jest test file named index.test.tsx",
+      "naming": {
+        "components": "camelCase",
+        "hooks": "useCamelCase"
+      }
+    }
+  },
+  "instructions": [
+    "Use strongly typed props and return values for all functions and components.",
+    "Use styled-components for all styles. Define styles in a separate styles.ts file next to each component.",
+    "Create a global theme in src/common/theme and provide it via ThemeProvider in the app root.",
+    "Each component should have an index.tsx, styles.ts, types.ts, and a Jest test file.",
+    "Avoid inline styles; all styling logic must live in styles.ts.",
+    "Prefer composition over prop drilling when building components.",
+    "Use absolute imports with @common and @features aliases for cleaner imports.",
+    "When creating a new feature, follow the feature-based directory convention under src/features/[featureName].",
+    "Use React functional components with hooks — no class components.",
+    "Ensure all types and interfaces are exported from types.ts for reusability.",
+    "Write unit tests for UI logic and critical hooks using Jest and React Testing Library.",
+    "Maintain consistency in naming: components camelCase, hooks useCamelCase.",
+    "When adding new theme properties, update the Theme interface in common/theme/types.ts to maintain strong typing.",
+    "Prefer React Query for fetching and caching data in client apps.",
+    "Prefer Zustand for state management in client apps.",
+    "Prefer React Router for routing in client apps.",
+    "Prefer components in styles.ts file to be prefixed with the word Styled to differentiate them from built in components.",
+    "Prefer types over interfaces when creating types.ts files.",
+    "Prefer functions over constants when creating index.ts files.",
+    "Prefer prefix all types with the word I to diffentiate them from component names.",
+    "Do not import React from 'react' in any files.",
+    "Prefer early returns over if-else chains. Use the pattern: if (condition) { return; } instead of if-else statements for better readability."
+  ]
+}
