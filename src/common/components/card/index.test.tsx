@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react";
+import { expect, describe, it } from "vitest";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { Card } from "./index";
 

@@ -1,3 +1,4 @@
+import { expect, describe, beforeEach, it } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useRatingStore } from "./index";
 import type { IRating } from "../hooks/useRatings/types";

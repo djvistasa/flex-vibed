@@ -1,3 +1,4 @@
+import { expect, describe, it } from "vitest";
 import { screen } from "@testing-library/react";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { Stars } from "./index";

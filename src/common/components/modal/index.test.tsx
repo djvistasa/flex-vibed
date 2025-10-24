@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi, expect, describe, beforeEach, it } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
 import { Modal } from "./index";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
