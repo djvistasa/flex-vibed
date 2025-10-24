@@ -4,6 +4,8 @@ import { Amenities } from "../amenities";
 import { StayPolicies } from "../stayPolicies";
 import { BookYourStay } from "../bookYourStay";
 import { ListingRatings } from "../listingRatings";
+import { GoogleReviews } from "@common/components/googleReviews";
+import { AutoGoogleReviews } from "@common/components/autoGoogleReviews";
 import {
   StyledListingBodyContainer,
   StyledLeftSection,
@@ -34,7 +36,18 @@ export function ListingBody({ listing }: IListingBodyProps) {
         <Card hasPadding={false}>
           <BookYourStay />
         </Card>
+
         <ListingRatings listingId={listing.id} />
+
+        {listing.googlePlaceId ? (
+          <Card>
+            <GoogleReviews placeId={listing.googlePlaceId} />
+          </Card>
+        ) : (
+          <Card>
+            <AutoGoogleReviews lat={listing.lat} lng={listing.lng} />
+          </Card>
+        )}
       </StyledRightSection>
     </StyledListingBodyContainer>
   );

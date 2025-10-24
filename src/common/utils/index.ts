@@ -67,18 +67,34 @@ const handleApiError = (error: unknown): IApiResponse => ({
 
 export const makeApiRequest = async (
   url: string,
-  options?: RequestInit
+  options?: RequestInit & { skipAuth?: boolean }
 ): Promise<IApiResponse> => {
   const bearerToken = BEARER_TOKEN;
   const baseUrl = BASE_URL;
 
-  const response = await fetch(`${baseUrl}${url}`, {
+  const headers: Record<string, string> = {
+    accept: "application/json",
+  };
+
+  // Add existing headers from options
+  if (options?.headers) {
+    Object.assign(headers, options.headers);
+  }
+
+  // Only add auth header if skipAuth is not true
+  if (!options?.skipAuth) {
+    headers.Authorization = `Bearer ${bearerToken}`;
+  }
+
+  // Check if URL is already a full URL (starts with http:// or https://)
+  const fullUrl =
+    url.startsWith("http://") || url.startsWith("https://")
+      ? url
+      : `${baseUrl}${url}`;
+
+  const response = await fetch(fullUrl, {
     ...options,
-    headers: {
-      Authorization: `Bearer ${bearerToken}`,
-      accept: "application/json",
-      ...options?.headers,
-    },
+    headers,
   });
 
   const data = await response.json();

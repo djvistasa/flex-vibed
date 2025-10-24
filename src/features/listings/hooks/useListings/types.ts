@@ -138,6 +138,7 @@ export type IListing = {
   airbnbTransit: string | null;
   airbnbNotes: string | null;
   insuranceEligibilityStatus: boolean;
+  googlePlaceId?: string;
   listingAmenities: IListingAmenity[];
   listingBedTypes: IListingBedType[];
   listingImages: IListingImage[];

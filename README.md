@@ -81,6 +81,8 @@ src/
 - **Dynamic Amenities System**: Fetches all available amenities and maps them to listings using amenity IDs
 - **Property Amenities**: Dynamic amenity display with modal for full list
 - **Stay Policies**: Cancellation policies and house rules
+- **Google Reviews Integration**: Displays Google reviews alongside internal ratings for enhanced credibility
+- **Automatic Place Detection**: Automatically finds Google Places based on listing coordinates when no Place ID is available
 
 ### **Ratings & Reviews**
 
@@ -100,6 +102,22 @@ src/
 
 - Node.js 18.17.0 or higher
 - npm or yarn package manager
+- **Google Places API Key** (required for Google Reviews functionality)
+
+### **API Requirements**
+
+**Google Places API Key Setup:**
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable the following APIs:
+   - **Places API** (required for place details and nearby search)
+   - **Maps JavaScript API** (optional, for enhanced features)
+4. Create credentials (API Key)
+5. Restrict the API key to your domain for security
+6. Add the key to your `.env` file as `VITE_GOOGLE_PLACES_API_KEY=your_api_key_here`
+
+> **Note**: Without a valid Google Places API key, the Google Reviews functionality will show error messages instead of reviews.
 
 ### **Installation**
 
@@ -110,6 +128,11 @@ cd flex-assessment
 
 # Install dependencies
 npm install
+
+# Configure environment variables
+cp .env.example .env
+# Edit .env and add your API keys:
+# VITE_GOOGLE_PLACES_API_KEY=your_google_places_api_key_here
 
 # Start development server
 npm run dev
@@ -140,7 +163,7 @@ The project uses **Vitest** as the primary testing framework, providing:
 - **Fast Test Execution**: Significantly faster than Jest
 - **Vite Integration**: Seamless integration with the build system
 - **Modern Testing APIs**: Latest testing utilities and patterns
-- **Comprehensive Coverage**: 96 tests covering components, hooks, and stores
+- **Comprehensive Coverage**: 113 tests covering components, hooks, and stores
 
 ### **Test Structure**
 
@@ -168,6 +191,114 @@ The amenities system demonstrates a sophisticated data management approach:
 - **ID-Based Mapping**: Listings contain only amenity IDs, which are mapped to full amenity objects at runtime
 - **Efficient Data Flow**: This approach minimizes API calls and ensures consistent amenity data across the application
 - **Dynamic Rendering**: Amenities are displayed dynamically based on the listing's amenity IDs
+
+### **Google Reviews Integration**
+
+The Google Reviews system provides external validation and credibility:
+
+> **⚠️ API Key Required**: To use Google Reviews functionality, you need a valid Google Places API key. Add `VITE_GOOGLE_PLACES_API_KEY=your_api_key_here` to your `.env` file. The API key must have the following APIs enabled:
+>
+> - Places API (for place details and nearby search)
+> - Maps JavaScript API (optional, for enhanced features)
+
+- **Google Places API Integration**: Fetches reviews directly from Google Places API using listing place IDs
+- **Automatic Place Discovery**: Uses Google Places Nearby Search to find places based on coordinates
+- **Coordinate-Based Place ID Resolution**:
+  - Uses Google Places Nearby Search API with `location=${lat},${lng}&radius=${radius}&type=lodging`
+  - Searches for lodging/accommodation types within specified radius (default 100m)
+  - Returns the closest matching Google Place ID for the listing coordinates
+  - Falls back gracefully when no Google place is found in the area
+- **Smart Fallback Strategy**:
+  - If listing has pre-configured `googlePlaceId` → Use direct Google Reviews
+  - If no `googlePlaceId` → Automatically discover using coordinates
+  - If no place found → Show appropriate "no reviews available" message
+- **Caching Strategy**:
+  - Reviews cached for 5 minutes (frequent updates)
+  - Place IDs cached for 24 hours (rarely change)
+- **Error Handling**: Graceful fallback when Google reviews are unavailable or API errors occur
+- **Consistent UI**: Google reviews follow the same design patterns as internal reviews for seamless integration
+
+#### **Technical Implementation Details**
+
+**Coordinate-to-Place-ID Process:**
+
+1. **Input**: Listing coordinates (`lat: 53.5403, lng: 8.58936`)
+2. **API Call**: `GET https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.5403,8.58936&radius=100&type=lodging&key=${API_KEY}`
+3. **Response Processing**:
+   - Parse Google Places API response
+   - Extract `place_id` from first result
+   - Return `null` if no lodging found within radius
+4. **Caching**: Store place ID for 24 hours to minimize API calls
+5. **Reviews Fetch**: Use discovered place ID to fetch Google reviews
+
+**API Endpoints Used:**
+
+- **Nearby Search**: `/place/nearbysearch/json` - Find places by coordinates
+- **Place Details**: `/place/details/json` - Get reviews for specific place ID
+
+**Error Handling:**
+
+- API key validation before requests
+- Network error handling with retry logic
+- Graceful degradation when no place found
+- User-friendly error messages
+
+#### **Code Examples**
+
+**Finding Place ID from Coordinates:**
+
+```typescript
+import { useFindGooglePlaceId } from "@common/hooks/useFindGooglePlaceId";
+
+function ListingComponent({ lat, lng }) {
+  const {
+    data: placeId,
+    isLoading,
+    error,
+  } = useFindGooglePlaceId(lat, lng, 150);
+
+  if (isLoading) return <div>Finding Google place...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!placeId) return <div>No Google place found</div>;
+
+  return <GoogleReviews placeId={placeId} />;
+}
+```
+
+**Automatic Place Discovery Component:**
+
+```typescript
+import { AutoGoogleReviews } from "@common/components/autoGoogleReviews";
+
+function ListingPage({ listing }) {
+  return (
+    <div>
+      {/* Other listing content */}
+
+      {/* Automatically finds and displays Google reviews */}
+      <AutoGoogleReviews lat={listing.lat} lng={listing.lng} radius={200} />
+    </div>
+  );
+}
+```
+
+**Smart Fallback Strategy:**
+
+```typescript
+function ListingReviews({ listing }) {
+  return (
+    <div>
+      {listing.googlePlaceId ? (
+        // Use pre-configured place ID
+        <GoogleReviews placeId={listing.googlePlaceId} />
+      ) : (
+        // Auto-discover using coordinates
+        <AutoGoogleReviews lat={listing.lat} lng={listing.lng} />
+      )}
+    </div>
+  );
+}
+```
 
 ### **State Persistence**
 

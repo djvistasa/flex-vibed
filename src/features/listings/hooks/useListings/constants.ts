@@ -123,6 +123,7 @@ export const MOCK_LISTINGS: IListing[] = [
     airbnbTransit: null,
     airbnbNotes: null,
     insuranceEligibilityStatus: false,
+    googlePlaceId: "ChIJN1t_tDeuEmsRUsoyG83frY4",
     listingAmenities: [
       {
         id: 3449,
@@ -293,6 +294,7 @@ export const MOCK_LISTINGS: IListing[] = [
     airbnbTransit: "Car recommended, 30 min to LAX",
     airbnbNotes: "Perfect for families and special occasions",
     insuranceEligibilityStatus: true,
+    googlePlaceId: "ChIJd8BlQ2BZwokRAFQEcDlJRAI",
     listingAmenities: [
       {
         id: 5001,
