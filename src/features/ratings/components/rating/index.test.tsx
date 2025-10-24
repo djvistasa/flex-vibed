@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { screen } from "@testing-library/react";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { Rating } from "./index";
@@ -52,21 +53,21 @@ const mockRatingWithoutValue: IRating = {
 };
 
 // Mock the UI store
-jest.mock("@common/stores/ui", () => ({
-  useUIStore: jest.fn((selector) => {
+vi.mock("@common/stores/ui", () => ({
+  useUIStore: vi.fn((selector) => {
     const store = {
-      showModal: jest.fn(),
-      hideModal: jest.fn(),
+      showModal: vi.fn(),
+      hideModal: vi.fn(),
     };
     return selector(store);
   }),
 }));
 
 // Mock the rating store
-jest.mock("../../store", () => ({
-  useRatingStore: jest.fn((selector) => {
+vi.mock("../../store", () => ({
+  useRatingStore: vi.fn((selector) => {
     const store = {
-      changeRatingStatus: jest.fn(),
+      changeRatingStatus: vi.fn(),
     };
     return selector(store);
   }),
@@ -76,7 +77,7 @@ describe("Rating", () => {
   const renderWithTheme = useTestComponentWithTheme();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders without crashing", () => {

@@ -4,19 +4,14 @@ import { theme } from "../../theme";
 import { MemoryRouter } from "react-router-dom";
 
 import type { RenderResult } from "@testing-library/react";
-
+import type { IRenderOptions } from "./types";
 import type { ReactElement } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-type RenderOptions = {
-  withRouter?: boolean;
-  initialRoute?: string;
-};
 
 function useTestComponentWithTheme() {
   const renderWithTheme = (
     component: ReactElement,
-    options?: RenderOptions
+    options?: IRenderOptions
   ): RenderResult => {
     const queryClient = new QueryClient({
       defaultOptions: {

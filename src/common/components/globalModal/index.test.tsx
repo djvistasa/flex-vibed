@@ -1,24 +1,25 @@
+import { vi } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { GlobalModal } from "./index";
 import { useUIStore } from "@common/stores/ui";
 
 // Mock the UI store
-jest.mock("@common/stores/ui", () => ({
-  useUIStore: jest.fn(),
+vi.mock("@common/stores/ui", () => ({
+  useUIStore: vi.fn(),
 }));
 
 describe("GlobalModal", () => {
   const renderWithTheme = useTestComponentWithTheme();
-  const mockHideModal = jest.fn();
-  const mockOnClose = jest.fn();
+  const mockHideModal = vi.fn();
+  const mockOnClose = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders modal when isOpen is true", () => {
-    (useUIStore as unknown as jest.Mock).mockImplementation((selector) =>
+    (useUIStore as unknown as vi.Mock).mockImplementation((selector) =>
       selector({
         modal: {
           isOpen: true,
@@ -42,7 +43,7 @@ describe("GlobalModal", () => {
   });
 
   it("does not render modal when isOpen is false", () => {
-    (useUIStore as unknown as jest.Mock).mockImplementation((selector) =>
+    (useUIStore as unknown as vi.Mock).mockImplementation((selector) =>
       selector({
         modal: {
           isOpen: false,
@@ -65,7 +66,7 @@ describe("GlobalModal", () => {
   });
 
   it("calls hideModal when close button is clicked", () => {
-    (useUIStore as unknown as jest.Mock).mockImplementation((selector) =>
+    (useUIStore as unknown as vi.Mock).mockImplementation((selector) =>
       selector({
         modal: {
           isOpen: true,
@@ -91,7 +92,7 @@ describe("GlobalModal", () => {
   });
 
   it("calls both onClose callback and hideModal when close button is clicked", () => {
-    (useUIStore as unknown as jest.Mock).mockImplementation((selector) =>
+    (useUIStore as unknown as vi.Mock).mockImplementation((selector) =>
       selector({
         modal: {
           isOpen: true,
@@ -118,10 +119,10 @@ describe("GlobalModal", () => {
   });
 
   it("passes all modal props to Modal component", () => {
-    const mockOnConfirm = jest.fn();
-    const mockOnCancel = jest.fn();
+    const mockOnConfirm = vi.fn();
+    const mockOnCancel = vi.fn();
 
-    (useUIStore as unknown as jest.Mock).mockImplementation((selector) =>
+    (useUIStore as unknown as vi.Mock).mockImplementation((selector) =>
       selector({
         modal: {
           isOpen: true,

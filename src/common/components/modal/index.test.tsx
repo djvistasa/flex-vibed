@@ -1,14 +1,15 @@
+import { vi } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
 import { Modal } from "./index";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 
 describe("Modal", () => {
-  const mockOnClose = jest.fn();
-  const mockOnConfirm = jest.fn();
+  const mockOnClose = vi.fn();
+  const mockOnConfirm = vi.fn();
   const renderWithTheme = useTestComponentWithTheme();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders when isOpen is true", () => {
@@ -46,7 +47,7 @@ describe("Modal", () => {
   });
 
   it("calls onCancel when cancel button is clicked", () => {
-    const mockOnCancel = jest.fn();
+    const mockOnCancel = vi.fn();
     renderWithTheme(
       <Modal
         isOpen={true}
@@ -100,7 +101,7 @@ describe("Modal", () => {
   });
 
   it("uses custom button text", () => {
-    const mockOnCancel = jest.fn();
+    const mockOnCancel = vi.fn();
     renderWithTheme(
       <Modal
         isOpen={true}

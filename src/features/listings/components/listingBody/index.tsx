@@ -1,7 +1,9 @@
 import { Card } from "@common/components/card";
 import { AboutProperty } from "../aboutProperty";
 import { Amenities } from "../amenities";
+import { StayPolicies } from "../stayPolicies";
 import { BookYourStay } from "../bookYourStay";
+import { ListingRatings } from "../listingRatings";
 import {
   StyledListingBodyContainer,
   StyledLeftSection,
@@ -23,10 +25,16 @@ export function ListingBody({ listing }: IListingBodyProps) {
             )}
           />
         </Card>
+        <Card>
+          <StayPolicies listing={listing} />
+        </Card>
       </StyledLeftSection>
 
       <StyledRightSection>
-        <BookYourStay />
+        <Card hasPadding={false}>
+          <BookYourStay />
+        </Card>
+        <ListingRatings listingId={listing.id} />
       </StyledRightSection>
     </StyledListingBodyContainer>
   );

@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { StatusSelector } from "./index";
@@ -5,10 +6,10 @@ import type { IRatingStatus } from "@features/ratings/store/types";
 
 describe("StatusSelector", () => {
   const renderWithTheme = useTestComponentWithTheme();
-  const mockOnStatusSelect = jest.fn();
+  const mockOnStatusSelect = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders all status options", () => {

@@ -14,10 +14,11 @@ export const theme: DefaultTheme = {
     secondaryDark: "#475569", // Dark slate
 
     // Neutral colors - Clean whites and grays
-    background: "#ffffff", // Pure white
+    background: "#fffdf6", // Warm white background
     backgroundSecondary: "#f8fafc", // Very light gray
     surface: "#ffffff", // White surface
     surfaceHover: "#f1f5f9", // Light gray hover
+    surfaceLight: "#f1f3ee", // Light green-gray for sections
 
     // Text colors - High contrast for readability
     text: "#0f172a", // Very dark blue-gray

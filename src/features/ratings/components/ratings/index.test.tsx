@@ -1,15 +1,16 @@
+import { vi } from "vitest";
 import { screen } from "@testing-library/react";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import { Ratings } from "./index";
 
 // Mock the useRatings hook
-jest.mock("../../hooks/useRatings", () => ({
-  useRatings: jest.fn(),
+vi.mock("../../hooks/useRatings", () => ({
+  useRatings: vi.fn(),
 }));
 
 // Mock the rating store
-jest.mock("../../store", () => ({
-  useRatingStore: jest.fn((selector) => {
+vi.mock("../../store", () => ({
+  useRatingStore: vi.fn((selector) => {
     const store = {
       filteredRatings: [],
       ratings: [],
@@ -19,31 +20,35 @@ jest.mock("../../store", () => ({
 }));
 
 // Mock the Rating component
-jest.mock("../rating", () => ({
+vi.mock("../rating", () => ({
   Rating: ({ rating }: any) => (
     <div data-testid="rating">{rating.listingName}</div>
   ),
 }));
 
+// Import mocked modules
+import { useRatings } from "../../hooks/useRatings";
+import { useRatingStore } from "../../store";
+
+const mockUseRatings = vi.mocked(useRatings);
+const mockUseRatingStore = vi.mocked(useRatingStore);
+
 describe("Ratings", () => {
   const renderWithTheme = useTestComponentWithTheme();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders without crashing", () => {
-    const { useRatings } = require("../../hooks/useRatings");
-    const { useRatingStore } = require("../../store");
-
-    useRatings.mockReturnValue({
+    mockUseRatings.mockReturnValue({
       isLoading: false,
       isError: false,
       error: null,
-      refetch: jest.fn(),
+      refetch: vi.fn(),
     });
 
-    useRatingStore.mockImplementation((selector) => {
+    mockUseRatingStore.mockImplementation((selector) => {
       const store = {
         filteredRatings: [],
         ratings: [],
@@ -55,17 +60,14 @@ describe("Ratings", () => {
   });
 
   it("displays loading state", () => {
-    const { useRatings } = require("../../hooks/useRatings");
-    const { useRatingStore } = require("../../store");
-
-    useRatings.mockReturnValue({
+    mockUseRatings.mockReturnValue({
       isLoading: true,
       isError: false,
       error: null,
-      refetch: jest.fn(),
+      refetch: vi.fn(),
     });
 
-    useRatingStore.mockImplementation((selector) => {
+    mockUseRatingStore.mockImplementation((selector) => {
       const store = {
         filteredRatings: [],
         ratings: [],
@@ -78,17 +80,14 @@ describe("Ratings", () => {
   });
 
   it("displays error state", () => {
-    const { useRatings } = require("../../hooks/useRatings");
-    const { useRatingStore } = require("../../store");
-
-    useRatings.mockReturnValue({
+    mockUseRatings.mockReturnValue({
       isLoading: false,
       isError: true,
       error: new Error("Failed to load"),
-      refetch: jest.fn(),
+      refetch: vi.fn(),
     });
 
-    useRatingStore.mockImplementation((selector) => {
+    mockUseRatingStore.mockImplementation((selector) => {
       const store = {
         filteredRatings: [],
         ratings: [],
@@ -101,17 +100,14 @@ describe("Ratings", () => {
   });
 
   it("displays empty state when no ratings", () => {
-    const { useRatings } = require("../../hooks/useRatings");
-    const { useRatingStore } = require("../../store");
-
-    useRatings.mockReturnValue({
+    mockUseRatings.mockReturnValue({
       isLoading: false,
       isError: false,
       error: null,
-      refetch: jest.fn(),
+      refetch: vi.fn(),
     });
 
-    useRatingStore.mockImplementation((selector) => {
+    mockUseRatingStore.mockImplementation((selector) => {
       const store = {
         filteredRatings: [],
         ratings: [],
@@ -124,22 +120,19 @@ describe("Ratings", () => {
   });
 
   it("renders ratings list", () => {
-    const { useRatings } = require("../../hooks/useRatings");
-    const { useRatingStore } = require("../../store");
-
     const mockRatings = [
       { id: 1, listingName: "Test Listing 1" },
       { id: 2, listingName: "Test Listing 2" },
     ];
 
-    useRatings.mockReturnValue({
+    mockUseRatings.mockReturnValue({
       isLoading: false,
       isError: false,
       error: null,
-      refetch: jest.fn(),
+      refetch: vi.fn(),
     });
 
-    useRatingStore.mockImplementation((selector) => {
+    mockUseRatingStore.mockImplementation((selector) => {
       const store = {
         filteredRatings: mockRatings,
         ratings: mockRatings,

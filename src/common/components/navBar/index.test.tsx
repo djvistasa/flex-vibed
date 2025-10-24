@@ -1,20 +1,21 @@
+import { vi } from "vitest";
 import { screen } from "@testing-library/react";
 import useTestComponentWithTheme from "@common/hooks/useTestComponentWithTheme";
 import NavBar from "./index";
 
 // Mock the UI store
-jest.mock("@common/stores/ui", () => ({
-  useUIStore: jest.fn((selector) => {
+vi.mock("@common/stores/ui", () => ({
+  useUIStore: vi.fn((selector) => {
     const store = {
-      showModal: jest.fn(),
-      hideModal: jest.fn(),
+      showModal: vi.fn(),
+      hideModal: vi.fn(),
     };
     return selector(store);
   }),
 }));
 
 // Mock FilterForm component
-jest.mock("@common/components/filterForm", () => ({
+vi.mock("@common/components/filterForm", () => ({
   FilterForm: () => <div>Filter Form</div>,
 }));
 
@@ -22,7 +23,7 @@ describe("NavBar", () => {
   const renderWithTheme = useTestComponentWithTheme();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders the brand name", () => {

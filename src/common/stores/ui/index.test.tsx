@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useUIStore } from "./index";
 
@@ -73,8 +74,8 @@ describe("useUIStore", () => {
 
       it("shows modal with full config", () => {
         const { result } = renderHook(() => useUIStore());
-        const mockOnConfirm = jest.fn();
-        const mockOnClose = jest.fn();
+        const mockOnConfirm = vi.fn();
+        const mockOnClose = vi.fn();
 
         act(() => {
           result.current.showModal({
@@ -135,7 +136,7 @@ describe("useUIStore", () => {
 
     it("resets modal to initial state when hiding", () => {
       const { result } = renderHook(() => useUIStore());
-      const mockOnConfirm = jest.fn();
+      const mockOnConfirm = vi.fn();
 
       act(() => {
         result.current.showModal({

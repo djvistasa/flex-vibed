@@ -1,35 +1,37 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createElement, type ReactNode } from "react";
+import { vi } from "vitest";
 import { useListings } from "./index";
 import type { IListing } from "./types";
 
 // Mock dependencies
-jest.mock("@common/utils", () => ({
-  makeApiRequest: jest.fn(),
+vi.mock("@common/utils", () => ({
+  makeApiRequest: vi.fn(),
 }));
 
-jest.mock("react-router-dom", () => ({
-  useParams: jest.fn(),
-  useNavigate: jest.fn(),
+vi.mock("react-router-dom", () => ({
+  useParams: vi.fn(),
+  useNavigate: vi.fn(),
 }));
 
-jest.mock("@common/stores/ui", () => ({
+vi.mock("@common/stores/ui", () => ({
   useUIStore: {
-    getState: jest.fn(() => ({
-      showModal: jest.fn(),
-      hideModal: jest.fn(),
+    getState: vi.fn(() => ({
+      showModal: vi.fn(),
+      hideModal: vi.fn(),
     })),
   },
 }));
 
-// Import after mocking
-const { makeApiRequest } = jest.requireMock("@common/utils");
-const { useParams: mockUseParams, useNavigate: mockUseNavigate } =
-  jest.requireMock("react-router-dom");
+// Import mocked modules
+import { makeApiRequest } from "@common/utils";
+import { useParams, useNavigate } from "react-router-dom";
 
-const mockMakeApiRequest = makeApiRequest as jest.Mock;
-const mockNavigate = jest.fn();
+const mockMakeApiRequest = vi.mocked(makeApiRequest);
+const mockUseParams = vi.mocked(useParams);
+const mockUseNavigate = vi.mocked(useNavigate);
+const mockNavigate = vi.fn();
 
 describe("useListings", () => {
   let queryClient: QueryClient;
@@ -190,7 +192,7 @@ describe("useListings", () => {
         },
       },
     });
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseParams.mockReturnValue({});
     mockUseNavigate.mockReturnValue(mockNavigate);
   });

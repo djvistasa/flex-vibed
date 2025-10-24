@@ -57,8 +57,13 @@ export const StyledDateInput = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-export const StyledGuestsInput = styled.div`
+export const StyledGuestsContainer = styled.div`
+  position: relative;
   flex: 1;
+`;
+
+export const StyledGuestsInput = styled.div`
+  width: 100%;
   background: ${({ theme }) => theme.colors.background};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.sm};
@@ -69,6 +74,53 @@ export const StyledGuestsInput = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+export const StyledGuestsDropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  box-shadow: ${({ theme }) => theme.shadows.lg};
+  z-index: 1000;
+  margin-top: ${({ theme }) => theme.spacing.xs};
+  max-height: 200px;
+  overflow-y: auto;
+`;
+
+export const StyledGuestsOption = styled.div<{ $isSelected?: boolean }>`
+  padding: ${({ theme }) => theme.spacing.md};
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: ${({ theme, $isSelected }) =>
+    $isSelected ? theme.colors.primaryLight : "transparent"};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surfaceHover};
+  }
+
+  &:first-child {
+    border-radius: ${({ theme }) => theme.borderRadius.sm}
+      ${({ theme }) => theme.borderRadius.sm} 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 ${({ theme }) => theme.borderRadius.sm}
+      ${({ theme }) => theme.borderRadius.sm};
+  }
 `;
 
 export const StyledBookingDetails = styled.div`
